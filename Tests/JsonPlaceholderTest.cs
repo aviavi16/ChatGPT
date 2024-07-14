@@ -16,7 +16,14 @@ namespace ChatGPT.Tests
     public class JsonPlaceholderTest
     {
         //Intialize RestClient with the base URL
-        private RestClient client; 
+        private RestClient client;
+
+        [SetUp]
+        public void Setup()
+        {
+            // Initialize the RestClient with the base URL before each test
+            client = new RestClient("https://jsonplaceholder.typicode.com");
+        }
 
         [Test]
         public void TestGetPosts()
@@ -25,6 +32,19 @@ namespace ChatGPT.Tests
 
             var response = client.Execute(requst);
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Dispose of the RestClient after each test
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            // Dispose of the RestClient
+            client?.Dispose();
         }
 
     }
